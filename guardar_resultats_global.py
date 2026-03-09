@@ -1,16 +1,12 @@
 import os
 import pandas as pd
 
-# ======================================================
-# FITXER GLOBAL TFM
-# ======================================================
+
+# FITXER GLOBAL DEL TFM
 
 GLOBAL_EXCEL = r"C:\Users\sanrr\PycharmProjects\TFM\RESULTATS_GLOBALS\resultats_globals_TFM.xlsx"
 os.makedirs(os.path.dirname(GLOBAL_EXCEL), exist_ok=True)
 
-# ======================================================
-# RUTES DE TOTES LES MOSTRES (2D + 3D)
-# ======================================================
 
 BASE = r"C:\Users\sanrr\PycharmProjects\TFM"
 
@@ -41,9 +37,8 @@ PATHS = {
     }
 }
 
-# ======================================================
-# FUNCIONS DE LECTURA
-# ======================================================
+
+# LECTURA
 
 def llegir_fd2d(path):
     df = pd.read_excel(path)
@@ -53,14 +48,13 @@ def llegir_fd3d(path):
     df = pd.read_excel(path)
     return float(df["FD3D"].iloc[0]), float(df["slope"].iloc[0]), float(df["R2"].iloc[0])
 
-# ======================================================
-# AFEGIR / ACTUALITZAR MOSTRA
-# ======================================================
+
+# AFEGIR o ACTUALITZAR MOSTRA
 
 def afegir_mostra(mostra, E_exp=None, sigma_exp=None, BMD=None, estudi="Marc"):
 
     if mostra not in PATHS:
-        raise ValueError(f"❌ Mostra {mostra} no definida.")
+        raise ValueError(f" Mostra {mostra} no definida.")
 
     path2d = PATHS[mostra]["FD2D"]
     path3d = PATHS[mostra]["FD3D"]
@@ -89,28 +83,25 @@ def afegir_mostra(mostra, E_exp=None, sigma_exp=None, BMD=None, estudi="Marc"):
 
     if os.path.exists(GLOBAL_EXCEL):
         df = pd.read_excel(GLOBAL_EXCEL)
-        df = df[df["Mostra"] != mostra]  # evita duplicats
+        df = df[df["Mostra"] != mostra]  # aixi no dupliquem
         df = pd.concat([df, pd.DataFrame([nova_fila])], ignore_index=True)
     else:
         df = pd.DataFrame([nova_fila])
 
     df.to_excel(GLOBAL_EXCEL, index=False)
 
-    print("✔️ Mostra afegida / actualitzada correctament:")
-    print("   →", mostra)
-    print("📂", GLOBAL_EXCEL)
+    print(" Mostra afegida o actualitzada correctament:")
+    print(" la ", mostra)
+    print("carpeta", GLOBAL_EXCEL)
 
 
-# ======================================================
+
 # EXECUCIÓ INTERACTIVA
-# ======================================================
-
 if __name__ == "__main__":
 
-    print("======================================")
-    print("  AFEGIR RESULTATS GLOBALS TFM")
-    print("======================================")
 
+    print("  AFEGIR RESULTATS GLOBALS TFM")
+    
     for i, m in enumerate(PATHS.keys(), start=1):
         print(f"{i} = {m}")
 
@@ -137,4 +128,5 @@ if __name__ == "__main__":
         sigma_exp=sigma_val,
         BMD=bmd_val
     )
+
 
