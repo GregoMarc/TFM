@@ -5,9 +5,8 @@ from scipy.stats import linregress
 from sklearn.linear_model import LinearRegression
 from mpl_toolkits.mplot3d import Axes3D
 
-# =====================================================
-# 1️⃣ LLEGIR DADES
-# =====================================================
+# LLEGIR DADES
+
 
 # Excel global (FD + mecànics)
 GLOBAL_EXCEL = r"C:\Users\sanrr\PycharmProjects\TFM\RESULTATS_GLOBALS\resultats_globals_TFM.xlsx"
@@ -17,9 +16,8 @@ df_global = pd.read_excel(GLOBAL_EXCEL)
 LAC_EXCEL = r"C:\Users\sanrr\PycharmProjects\TFM\RESULTATS_LACUNARITY\lacunarity_all_samples.xlsx"
 df_lac = pd.read_excel(LAC_EXCEL)
 
-# =====================================================
-# 2️⃣ AGAFAR NOMÉS LACUNARITAT BOX = 64
-# =====================================================
+
+#AGAFAR NOMÉS LACUNARITAT de BOX = 64
 
 df_lac_64 = df_lac[df_lac["Box size"] == 64][["Mostra", "Lacunarity"]].copy()
 df_lac_64 = df_lac_64.rename(columns={"Lacunarity": "Lac_64"})
@@ -27,9 +25,8 @@ df_lac_64 = df_lac_64.rename(columns={"Lacunarity": "Lac_64"})
 # Merge correcte
 df = pd.merge(df_global, df_lac_64, on="Mostra")
 
-# =====================================================
-# 3️⃣ FUNCIONS DE REGRESSIÓ
-# =====================================================
+
+# FUNCIONS DE REGRESSIÓ
 
 def regressio_simple(x, y):
     slope, intercept, r, p, _ = linregress(x, y)
@@ -40,10 +37,8 @@ def regressio_multiple(X, y):
     model.fit(X, y)
     return model.score(X, y), model.coef_, model.intercept_
 
-# =====================================================
-# 4️⃣ CÀLCUL DE TOTES LES REGRESSIONS
-# =====================================================
 
+# CÀLCUL DE TOTES LES REGRESSIONS
 resultats = []
 
 # FD2D vs FD3D
@@ -79,12 +74,11 @@ for Y in Y_vars:
         "coef_Lac": coefs[1]
     })
 
-# =====================================================
-# 5️⃣ MOSTRAR TOTS ELS RESULTATS PER PANTALLA
-# =====================================================
 
-print("\n==============================")
-print("📊 RESULTATS COMPLETS TFM")
+# MOSTRAR TOTS ELS RESULTATS PER PANTALLA
+
+
+print("RESULTATS COMPLETS TFM")
 print("==============================\n")
 
 for r in resultats:
@@ -98,11 +92,9 @@ for r in resultats:
         print(f"coef FD3D = {r['coef_FD3D']:.3f}")
         print(f"coef Lac64 = {r['coef_Lac']:.3f}")
 
-    print("----------------------------------")
+   
 
-# =====================================================
-# 6️⃣ GRÀFICS CLAU
-# =====================================================
+# GRÀFICS CLAU
 
 def plot_simple(x, y, xlabel, ylabel, title):
     m, b = np.polyfit(x, y, 1)
@@ -130,3 +122,4 @@ ax.set_ylabel("Lac64")
 ax.set_zlabel("E")
 ax.set_title("FD3D + Lac64 vs E")
 plt.show()
+
