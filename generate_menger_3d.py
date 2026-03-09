@@ -3,9 +3,8 @@ import numpy as np
 import imageio
 from scipy.ndimage import gaussian_filter
 
-# -------------------------------
+
 # GENERADOR MENGER SPONGE 3D
-# -------------------------------
 
 def menger_sponge(iterations):
     n = iterations
@@ -41,15 +40,14 @@ def menger_sponge(iterations):
 
 
 
-# -------------------------------
-# GENERAR + DESAR COM BMP STACK
-# -------------------------------
+
+# GENERAR + GUARDAR COM BMP STACK
 
 def generate_and_save(iterations=3, out_folder=r"C:\Users\sanrr\PycharmProjects\TFM\MENGER_3D", smooth_sigma=0.7):
 
     vol = menger_sponge(iterations)
 
-    # Suavitzar una mica per anti-aliasing (opcional)
+    # Suavitzar una mica per anti-aliasing 
     vol = gaussian_filter(vol, sigma=smooth_sigma)
 
     os.makedirs(out_folder, exist_ok=True)
@@ -59,7 +57,7 @@ def generate_and_save(iterations=3, out_folder=r"C:\Users\sanrr\PycharmProjects\
     for z in range(depth):
         slice_z = vol[:, :, z]
 
-        # Normalitzar manualment (NumPy 2.0 compatible)
+        # Normalitzar manualment 
         minv = np.min(slice_z)
         maxv = np.max(slice_z)
         ptp = np.ptp(slice_z)
@@ -74,9 +72,8 @@ def generate_and_save(iterations=3, out_folder=r"C:\Users\sanrr\PycharmProjects\
         fname = os.path.join(out_folder, f"menger_z{z:03d}.bmp")
         imageio.imwrite(fname, slice_img)
 
-    print("====================================")
-    print("   ✔ MENGER SPONGE 3D GENERADA")
-    print("====================================")
+
+    print(" MENGER SPONGE 3D GENERADA")
     print("Carpeta:", out_folder)
     print("Mida volum:", vol.shape)
 
@@ -84,13 +81,14 @@ def generate_and_save(iterations=3, out_folder=r"C:\Users\sanrr\PycharmProjects\
 
 
 
-# -------------------------------
+
 # EXECUCIÓ DIRECTA
-# -------------------------------
+
 
 if __name__ == "__main__":
     generate_and_save(
-        iterations=4,   # pots provar 3 si vols que sigui més ràpid
+        iterations=4,   
         out_folder=r"C:\Users\sanrr\PycharmProjects\TFM\MENGER_3D",
         smooth_sigma=0.5
     )
+
